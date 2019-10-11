@@ -33,6 +33,7 @@ my $t = Test::Nginx->new()->has(qw/http proxy map image_filter/)->plan(39)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

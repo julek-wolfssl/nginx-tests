@@ -29,6 +29,7 @@ my $t = Test::Nginx->new()->has(qw/http auth_basic/)->plan(21)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

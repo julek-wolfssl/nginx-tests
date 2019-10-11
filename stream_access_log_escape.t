@@ -28,6 +28,7 @@ my $t = Test::Nginx->new()->has(qw/stream stream_map stream_return/)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

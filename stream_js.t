@@ -30,6 +30,7 @@ my $t = Test::Nginx->new()->has(qw/http proxy rewrite stream stream_return udp/)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

@@ -28,6 +28,7 @@ my $t = Test::Nginx->new()->has(qw/http proxy upstream_zone upstream_random/)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 worker_processes 2;
 
 events {

@@ -27,6 +27,7 @@ my $t = Test::Nginx->new()->has(qw/http proxy cache/)->plan(17)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

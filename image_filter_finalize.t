@@ -28,6 +28,7 @@ my $t = Test::Nginx->new()->has(qw/http proxy cache image_filter limit_req/)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

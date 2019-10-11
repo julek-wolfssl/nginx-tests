@@ -28,6 +28,7 @@ $t->write_file_expand('nginx.conf', <<'EOF')->has(qw/http proxy ssi/)->plan(9);
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

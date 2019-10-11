@@ -29,6 +29,7 @@ my $t = Test::Nginx->new()->has(qw/http perl rewrite/)->plan(24)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

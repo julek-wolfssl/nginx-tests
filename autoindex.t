@@ -27,6 +27,7 @@ my $t = Test::Nginx->new()->has(qw/http autoindex charset symlink/)->plan(16)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

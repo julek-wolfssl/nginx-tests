@@ -29,6 +29,7 @@ my $t = Test::Nginx->new()
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 worker_processes 2;
 
 events {

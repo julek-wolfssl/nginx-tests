@@ -30,6 +30,7 @@ my $t = Test::Nginx->new()->has(qw/http http_ssl sni proxy/)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

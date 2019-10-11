@@ -28,6 +28,7 @@ my $t = Test::Nginx->new()->has(qw/http proxy charset gzip_static/)->plan(13)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

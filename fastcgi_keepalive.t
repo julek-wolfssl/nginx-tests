@@ -27,6 +27,7 @@ my $t = Test::Nginx->new()->has(qw/http fastcgi upstream_keepalive/)->plan(6)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

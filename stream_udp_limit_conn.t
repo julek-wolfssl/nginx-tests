@@ -29,6 +29,7 @@ my $t = Test::Nginx->new()->has(qw/stream stream_limit_conn udp/)->plan(9)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

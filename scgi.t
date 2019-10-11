@@ -30,6 +30,7 @@ my $t = Test::Nginx->new()->has(qw/http scgi/)->plan(7)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

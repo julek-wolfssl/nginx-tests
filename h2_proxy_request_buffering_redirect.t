@@ -30,6 +30,7 @@ $t->write_file_expand('nginx.conf', <<'EOF')->run();
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

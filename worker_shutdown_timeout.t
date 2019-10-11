@@ -30,6 +30,7 @@ my $t = Test::Nginx->new()->has(qw/http/)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 worker_shutdown_timeout 10ms;
 
 events {

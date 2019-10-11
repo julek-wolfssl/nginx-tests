@@ -30,6 +30,7 @@ my $t = Test::Nginx->new()->has(qw/http http_v2 proxy rewrite/)->plan(93)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

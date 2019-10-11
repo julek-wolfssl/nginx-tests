@@ -31,6 +31,7 @@ my $t = Test::Nginx->new()->has(qw/http proxy upstream_ip_hash realip unix/)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

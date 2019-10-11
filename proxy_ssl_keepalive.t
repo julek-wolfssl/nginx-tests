@@ -32,6 +32,7 @@ my $t = Test::Nginx->new()->has(qw/http http_ssl proxy upstream_keepalive/)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

@@ -29,6 +29,7 @@ my $t = Test::Nginx->new()->has(qw/http http_v2 proxy rewrite gzip/)->plan(42)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

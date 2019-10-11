@@ -27,6 +27,7 @@ my $t = Test::Nginx->new()->has(qw/http sub ssi xslt/)->plan(2)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

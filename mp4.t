@@ -30,6 +30,7 @@ my $t = Test::Nginx->new()->has(qw/http mp4/)->has_daemon('ffprobe')
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

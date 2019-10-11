@@ -27,6 +27,7 @@ my $t = Test::Nginx->new()->has('http')->plan(15)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

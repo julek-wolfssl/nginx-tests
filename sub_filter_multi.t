@@ -31,6 +31,7 @@ my $long_pattern = '0123456789abcdef' x 17;
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

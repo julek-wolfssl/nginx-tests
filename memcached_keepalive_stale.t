@@ -31,6 +31,7 @@ my $t = Test::Nginx->new()->has(qw/http memcached upstream_keepalive rewrite/)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 worker_processes 2;
 

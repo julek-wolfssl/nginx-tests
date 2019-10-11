@@ -38,6 +38,7 @@ error_log %%TESTDIR%%/e_glob2.log info;
 error_log syslog:server=127.0.0.1:%%PORT_8981_UDP%% info;
 
 daemon off;
+master_process off;
 
 events {
 }

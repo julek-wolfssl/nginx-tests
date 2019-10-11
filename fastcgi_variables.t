@@ -34,6 +34,7 @@ my $t = Test::Nginx->new()->has(qw/http fastcgi rewrite/)->plan(3)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

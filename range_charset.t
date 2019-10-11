@@ -28,6 +28,7 @@ my $t = Test::Nginx->new()->has(qw/http proxy cache charset/)->plan(10)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 events {
 }

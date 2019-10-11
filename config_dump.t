@@ -30,6 +30,7 @@ $t->plan(13)->write_file_expand('nginx.conf', <<'EOF');
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 
 include %%TESTDIR%%/inc.conf;
 include %%TESTDIR%%/inc.conf;

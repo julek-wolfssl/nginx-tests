@@ -33,6 +33,7 @@ my $t = Test::Nginx->new()->has(qw/mail imap http rewrite/)->plan(4)
 %%TEST_GLOBALS%%
 
 daemon off;
+master_process off;
 worker_shutdown_timeout 10ms;
 
 events {
