@@ -40,12 +40,14 @@ sub new {
 	$self->{_pid} = $$;
 	$self->{_alerts} = 1;
 
-	$self->{_testdir} = tempdir(
-		'nginx-test-XXXXXXXXXX',
-		TMPDIR => 1
-	)
-		or die "Can't create temp directory: $!\n";
+	#$self->{_testdir} = tempdir(
+	#	'nginx-test-XXXXXXXXXX',
+	#	TMPDIR => 1
+	#) or die "Can't create temp directory: $!\n";
+	$self->{_testdir} = '/tmp/nginx-test';
+	system("mkdir -p $self->{_testdir}");
 	$self->{_testdir} =~ s!\\!/!g if $^O eq 'MSWin32';
+	system("rm -r $self->{_testdir}/logs");
 	mkdir "$self->{_testdir}/logs"
 		or die "Can't create logs directory: $!\n";
 
@@ -64,6 +66,8 @@ sub DESTROY {
 	$self->stop();
 	$self->stop_daemons();
 
+print('error logs at: '.$self->{_testdir});
+return;
 	if (Test::More->builder->expected_tests) {
 		local $Test::Nginx::TODO = 'alerts' unless $self->{_alerts};
 
@@ -341,14 +345,17 @@ sub run(;$) {
 		my @globals = $self->{_test_globals} ?
 			() : ('-g', "pid $testdir/nginx.pid; "
 			. "error_log $testdir/error.log debug;");
-		exec($NGINX, '-p', "$testdir/", '-c', 'nginx.conf', @globals),
-			or die "Unable to exec(): $!\n";
+		#exec($NGINX, '-p', "$testdir/", '-c', 'nginx.conf', @globals), or die "Unable to exec(): $!\n";
 	}
 
 	# wait for nginx to start
 
-	$self->waitforfile("$testdir/nginx.pid", $pid)
-		or die "Can't start nginx";
+while (not `pgrep -x nginx`) {}
+
+while (`cat /proc/\$\(pgrep -x nginx\)/status | grep -P "\(tracing stop\)"`) {}
+
+
+	#$self->waitforfile("$testdir/nginx.pid", $pid) or die "Can't start nginx";
 
 	for (1 .. 50) {
 		last if $^O ne 'MSWin32';
