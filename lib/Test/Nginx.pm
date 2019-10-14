@@ -47,12 +47,16 @@ sub new {
 	$self->{_testdir} = '/tmp/nginx-test';
 	system("mkdir -p $self->{_testdir}");
 	$self->{_testdir} =~ s!\\!/!g if $^O eq 'MSWin32';
+if (-e "$self->{_testdir}/logs") {
 	system("rm -r $self->{_testdir}/logs");
+}
 	mkdir "$self->{_testdir}/logs"
 		or die "Can't create logs directory: $!\n";
 
 	Test::More::BAIL_OUT("no $NGINX binary found")
 		unless -x $NGINX;
+
+$self->{_accept_existing} = 1;
 
 	return $self;
 }
@@ -350,10 +354,16 @@ sub run(;$) {
 
 	# wait for nginx to start
 
+if ($self->{_accept_existing} == 0) {
+	print('\nPlease start a new nginx instance\n');
+	while (`pgrep -x nginx`) {}
+}
+
 while (not `pgrep -x nginx`) {}
 
 while (`cat /proc/\$\(pgrep -x nginx\)/status | grep -P "\(tracing stop\)"`) {}
 
+$self->{_accept_existing} = 0;
 
 	#$self->waitforfile("$testdir/nginx.pid", $pid) or die "Can't start nginx";
 
