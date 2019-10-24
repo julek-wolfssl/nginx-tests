@@ -54,18 +54,21 @@ http {
     ssl_stapling on;
     ssl_trusted_certificate trusted.crt;
 
-    ssl_certificate ec-end-int.crt;
-    ssl_certificate_key ec-end.key;
-
-    ssl_certificate end-int.crt;
-    ssl_certificate_key end.key;
-
     ssl_ciphers DEFAULT:ECCdraft;
 
     server {
         listen       127.0.0.1:8443 ssl;
         listen       127.0.0.1:8080;
         server_name  localhost;
+    ssl_certificate end-int.crt;
+    ssl_certificate_key end.key;
+    }
+    server {
+        listen       127.0.0.1:8453 ssl;
+        listen       127.0.0.1:8090;
+        server_name  localhost;
+    ssl_certificate ec-end-int.crt;
+    ssl_certificate_key ec-end.key;
     }
 
     server {
@@ -73,6 +76,17 @@ http {
         server_name  localhost;
 
         ssl_stapling_responder http://127.0.0.1:8081/;
+    ssl_certificate end-int.crt;
+    ssl_certificate_key end.key;
+    }
+
+    server {
+        listen       127.0.0.1:8454 ssl;
+        server_name  localhost;
+
+        ssl_stapling_responder http://127.0.0.1:8081/;
+    ssl_certificate ec-end-int.crt;
+    ssl_certificate_key ec-end.key;
     }
 
     server {
@@ -80,6 +94,8 @@ http {
         server_name  localhost;
 
         ssl_stapling_verify on;
+    ssl_certificate ec-end-int.crt;
+    ssl_certificate_key ec-end.key;
     }
 
     server {
@@ -88,6 +104,8 @@ http {
 
         ssl_certificate ec-end.crt;
         ssl_certificate_key ec-end.key;
+    ssl_certificate ec-end-int.crt;
+    ssl_certificate_key ec-end.key;
     }
 
     server {
@@ -98,6 +116,8 @@ http {
         ssl_certificate_key end.key;
 
         ssl_stapling_file %%TESTDIR%%/resp.der;
+    ssl_certificate end-int.crt;
+    ssl_certificate_key end.key;
     }
 
     server {
@@ -115,6 +135,8 @@ http {
         server_name  localhost;
 
         ssl_stapling_responder http://127.0.0.1:8080/;
+    ssl_certificate ec-end-int.crt;
+    ssl_certificate_key ec-end.key;
     }
 }
 
@@ -250,9 +272,9 @@ $t->waitforsocket("127.0.0.1:" . port(8081));
 my $version = get_version();
 
 staple(8443, 'RSA');
-staple(8443, 'ECDSA');
+staple(8453, 'ECDSA');
 staple(8444, 'RSA');
-staple(8444, 'ECDSA');
+staple(8454, 'ECDSA');
 staple(8445, 'ECDSA');
 staple(8446, 'ECDSA');
 staple(8449, 'ECDSA');
@@ -260,10 +282,10 @@ staple(8449, 'ECDSA');
 sleep 1;
 
 ok(!staple(8443, 'RSA'), 'staple revoked');
-ok(staple(8443, 'ECDSA'), 'staple success');
+ok(staple(8453, 'ECDSA'), 'staple success');
 
 ok(!staple(8444, 'RSA'), 'responder revoked');
-ok(staple(8444, 'ECDSA'), 'responder success');
+ok(staple(8454, 'ECDSA'), 'responder success');
 
 ok(!staple(8445, 'ECDSA'), 'verify - root not trusted');
 
