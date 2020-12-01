@@ -26,6 +26,8 @@ use POSIX qw/ waitpid WNOHANG /;
 use Socket qw/ CRLF /;
 use Test::More qw//;
 
+use Proc::Find qw(find_proc proc_exists);
+
 ###############################################################################
 
 our $NGINX = defined $ENV{TEST_NGINX_BINARY} ? $ENV{TEST_NGINX_BINARY}
@@ -217,12 +219,35 @@ sub run(;$) {
 	my $pid = fork();
 	die "Unable to fork(): $!\n" unless defined $pid;
 
+	if ($ENV{TEST_NGINX_GDBSERVER}) {
+		for (1 .. 300) {
+			last unless proc_exists(name=>'gdbserver');
+			select undef, undef, undef, 0.1;
+		}
+	}
+
 	if ($pid == 0) {
 		my @globals = $self->{_test_globals} ?
 			() : ('-g', "pid $testdir/nginx.pid; "
 			. "error_log $testdir/error.log debug;");
-		exec($NGINX, '-p', $testdir, '-c', 'nginx.conf', @globals),
-			or die "Unable to exec(): $!\n";
+		if ($ENV{TEST_NGINX_CATLOG}) {
+			print { *STDERR } "\n";
+			print { *STDERR } $NGINX . ' ';
+			print { *STDERR } '-p' . ' ';
+			print { *STDERR } $testdir . ' ';
+			print { *STDERR } '-c' . ' ';
+			print { *STDERR } 'nginx.conf' . ' ';
+			print { *STDERR } @globals;
+			print { *STDERR } "\n";
+		}
+		if ($ENV{TEST_NGINX_GDBSERVER}) {
+			exec('gdbserver', ':2345', $NGINX, '-p', $testdir, '-c', 'nginx.conf', @globals),
+				or die "Unable to exec(): $!\n";
+		}
+		else {
+			exec($NGINX, '-p', $testdir, '-c', 'nginx.conf', @globals),
+				or die "Unable to exec(): $!\n";
+		}
 	}
 
 	# wait for nginx to start
@@ -241,7 +266,7 @@ sub waitforfile($;$) {
 	# wait for file to appear
 	# or specified process to exit
 
-	for (1 .. 30) {
+	for (1 .. 300) {
 		return 1 if -e $file;
 		return 0 if $exited;
 		$exited = waitpid($pid, WNOHANG) != 0 if $pid;

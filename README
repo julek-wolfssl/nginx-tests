@@ -36,4 +36,8 @@ TEST_NGINX_UNSAFE
 
     Run unsafe tests.
 
+TEST_NGINX_GDBSERVER
+
+    Run Nginx under a gdbserver.
+
 Happy testing!
